@@ -4,23 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TFPARTNER | Visão Estratégica e Execução de Negócios</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+    
     <style>
-        /* Ajuste para o fundo do site conversar com o novo logo */
-:root {
-    --primary-black: #000000;
-    --pure-white: #ffffff;
-    --bg-muted: #ffffff; /* Alterado para branco puro */
-}
-
-/* Garantir que o logo SVG tenha um tamanho imponente mas equilibrado */
-.hero-logo-visual img {
-    max-width: 450px; /* Tamanho sugerido para o logo metálico */
-    height: auto;
-    filter: drop-shadow(0 15px 30px rgba(0,0,0,0.1)); /* Sombra leve para realçar o efeito 3D */
-}
+        :root {
+            --primary-black: #000000;
+            --pure-white: #ffffff;
+            --bg-muted: #ffffff; 
+            --corporate-graphite: #4d4d4d;
+            --font-main: 'Inter', sans-serif;
+            --font-logo: 'Montserrat', sans-serif;
+        }
 
         /* Reset e Base */
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -33,7 +30,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Utilitários de Layout */
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -42,7 +38,7 @@
 
         section { padding: 8rem 0; }
 
-        /* --- Header / Navegação Mínima --- */
+        /* --- Header --- */
         header {
             position: fixed;
             width: 100%;
@@ -60,25 +56,19 @@
             height: 80px;
         }
 
-        /* Estilo da Logo em Texto, alongada e com hierarquia */
         .logo-text {
             font-family: var(--font-logo);
-            font-weight: 300; /* Leve para o TF */
+            font-weight: 300;
             font-size: 1.4rem;
-            letter-spacing: 0.3em; /* Levemente alongado */
+            letter-spacing: 0.3em;
             text-transform: uppercase;
             color: var(--primary-black);
             text-decoration: none;
         }
 
-        .logo-text span {
-            font-weight: 600; /* Forte para o PARTNER */
-        }
+        .logo-text span { font-weight: 600; }
 
-        .nav-minimal {
-            display: flex;
-            gap: 2rem;
-        }
+        .nav-minimal { display: flex; gap: 2rem; }
 
         .nav-minimal a {
             text-decoration: none;
@@ -91,12 +81,12 @@
 
         .nav-minimal a:hover { color: var(--primary-black); }
 
-        /* --- Seção Hero / Impacto com a Logo Oficial --- */
+        /* --- Hero Section --- */
         .hero {
             display: flex;
             align-items: center;
             min-height: 100vh;
-            padding-top: 120px; /* Compensa o header fixo */
+            padding-top: 120px;
         }
 
         .hero-wrap {
@@ -106,21 +96,18 @@
             align-items: center;
         }
 
-        /* Espaço para a imagem da logo oficial */
         .hero-logo-visual {
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Se você tiver o SVG ou PNG da logo isolada, pode colocar aqui como img */
-            /* Por enquanto, estou simulando o espaço de destaque */
-            /* border: 1px dashed #ccc; padding: 4rem; text-align: center; color: #999; */
         }
 
         .hero-logo-visual img {
-            max-width: 100%;
+            width: 100%;
+            max-width: 450px;
             height: auto;
-            /* Adicione uma sombra suave para dar profundidade premium se necessário */
-            /* filter: drop-shadow(0 10px 20px rgba(0,0,0,0.05)); */
+            /* Filtro para realçar o novo logo metálico */
+            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.12));
         }
 
         .hero-text h1 {
@@ -149,13 +136,13 @@
             font-size: 0.85rem;
             letter-spacing: 0.2em;
             font-weight: 600;
-            transition: background-color 0.3s;
+            transition: transform 0.2s;
         }
 
-        .btn-primary:hover { background-color: #333; }
+        .btn-primary:hover { transform: translateY(-2px); background-color: #333; }
 
-        /* --- Seção de Conceito / Estratégia --- */
-        .concept { background-color: var(--bg-muted); }
+        /* --- Concept Section --- */
+        .concept { background-color: var(--bg-muted); border-top: 1px solid #f0f0f0; }
 
         .concept-header {
             text-align: center;
@@ -189,12 +176,12 @@
             background: var(--pure-white);
             padding: 3rem;
             border: 1px solid #eee;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: all 0.3s ease;
         }
 
         .concept-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.03);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
         }
 
         .concept-card h3 {
@@ -229,7 +216,6 @@
 
         footer .footer-logo span { font-weight: 600; }
 
-        /* Responsividade Básica */
         @media (max-width: 992px) {
             .hero-wrap { grid-template-columns: 1fr; text-align: center; }
             .hero-logo-visual { order: -1; margin-bottom: 3rem; }
@@ -262,7 +248,7 @@
                 </div>
                 
                 <div class="hero-logo-visual">
-                  <img src="logo.svg" alt="TFPARTNER Logo Oficial">
+                    <img src="logo.svg" alt="TFPARTNER Logo Oficial">
                 </div>
             </div>
         </section>
@@ -281,7 +267,7 @@
                     </div>
                     <div class="concept-card">
                         <h3>Presença Forte</h3>
-                        <p>Uma marca objetiva e minimalista. Traços pretos sólidos e recortes em negativo transmitem sofisticação e autoridade visual.</p>
+                        <p>Uma marca objetiva e minimalista. Traços sólidos e recortes em negativo transmitem sofisticação e autoridade visual.</p>
                     </div>
                     <div class="concept-card">
                         <h3>Foco em Execução</h3>
