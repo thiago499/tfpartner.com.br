@@ -8,15 +8,19 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-black: #000000;
-            --pure-white: #ffffff;
-            --corporate-graphite: #4d4d4d; /* Grafite para textos secundários */
-            --bg-muted: #fbfbfb; /* Um branco levemente acinzentado para seções */
-            
-            --font-main: 'Inter', sans-serif;
-            --font-logo: 'Montserrat', sans-serif; /* Montserrat tem uma estrutura mais alongada e limpa */
-        }
+        /* Ajuste para o fundo do site conversar com o novo logo */
+:root {
+    --primary-black: #000000;
+    --pure-white: #ffffff;
+    --bg-muted: #ffffff; /* Alterado para branco puro */
+}
+
+/* Garantir que o logo SVG tenha um tamanho imponente mas equilibrado */
+.hero-logo-visual img {
+    max-width: 450px; /* Tamanho sugerido para o logo metálico */
+    height: auto;
+    filter: drop-shadow(0 15px 30px rgba(0,0,0,0.1)); /* Sombra leve para realçar o efeito 3D */
+}
 
         /* Reset e Base */
         * { box-sizing: border-box; margin: 0; padding: 0; }
