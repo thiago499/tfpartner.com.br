@@ -98,27 +98,29 @@
         .hero {
             display: flex;
             align-items: center;
-            min-height: 100vh;
+            min-height: 88vh;
             padding-top: 120px;
+            padding-bottom: 4rem;
         }
 
         .hero-wrap {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
+            grid-template-columns: minmax(0, 1.08fr) minmax(280px, 0.92fr);
+            gap: 3rem;
             align-items: center;
         }
 
         .hero-logo-visual {
             display: flex;
-            justify-content: center;
+            justify-content: flex-end;
             align-items: center;
         }
 
         .hero-logo-visual img {
             width: 100%;
-            max-width: 450px;
+            max-width: 540px;
             height: auto;
+            transform: translateX(1.5rem);
             filter: drop-shadow(0 15px 30px rgba(0,0,0,0.12));
         }
 
@@ -156,9 +158,38 @@
             background-color: #333; 
         }
 
+        .hero-signals {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1.5rem;
+            max-width: 680px;
+            margin-top: 2.25rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e8e8e8;
+        }
+
+        .hero-signal {
+            display: grid;
+            gap: 0.4rem;
+        }
+
+        .hero-signal strong {
+            font-size: 0.78rem;
+            letter-spacing: 0.16em;
+            line-height: 1.3;
+            text-transform: uppercase;
+        }
+
+        .hero-signal span {
+            color: var(--corporate-graphite);
+            font-size: 0.92rem;
+            line-height: 1.45;
+        }
+
         .concept { 
             background-color: var(--bg-muted); 
             border-top: 1px solid #f0f0f0; 
+            padding-top: 6.5rem;
         }
 
         .concept-header {
@@ -247,12 +278,26 @@
 
             .hero-logo-visual { 
                 order: -1; 
-                margin-bottom: 3rem; 
+                justify-content: center;
+                margin-bottom: 2rem;
+            }
+
+            .hero-logo-visual img {
+                max-width: 380px;
+                transform: none;
             }
 
             .hero-text .subtitle { 
                 margin-left: auto; 
                 margin-right: auto; 
+            }
+
+            .hero-signals {
+                grid-template-columns: 1fr;
+                max-width: 520px;
+                margin-left: auto;
+                margin-right: auto;
+                text-align: left;
             }
 
             section { padding: 5rem 0; }
@@ -280,10 +325,16 @@
 
             .hero {
                 padding-top: 180px;
+                padding-bottom: 3rem;
             }
 
             .logo-text {
                 font-size: 1.1rem;
+            }
+
+            .hero-signals {
+                gap: 1rem;
+                margin-top: 2rem;
             }
         }
     </style>
@@ -309,6 +360,20 @@
                         A TFPartner ajuda a transformar esse volume em leituras que importam agora, para quem decide, para quem orienta e para quem executa.
                     </p>
                     <a href="mailto:contato@tfpartner.com.br" class="btn-primary">Iniciar Parceria</a>
+                    <div class="hero-signals" aria-label="Leituras essenciais">
+                        <div class="hero-signal">
+                            <strong>Decidir</strong>
+                            <span>Prioridades, riscos e oportunidades com visão executiva.</span>
+                        </div>
+                        <div class="hero-signal">
+                            <strong>Orientar</strong>
+                            <span>Rotas, gargalos e conversões para conduzir a atuação comercial.</span>
+                        </div>
+                        <div class="hero-signal">
+                            <strong>Executar</strong>
+                            <span>Registros, etapas e pontos de ação para a rotina da operação.</span>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="hero-logo-visual">
