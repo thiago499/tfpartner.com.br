@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TFPARTNER STUDIO: marketing sob demanda, design e produção audiovisual para empresas. Seu marketing, quando você precisar.">
+  <meta name="theme-color" content="#111111">
+  <meta name="robots" content="noindex, nofollow">
+  <title>TFPARTNER STUDIO | Marketing sob demanda</title>
+  <link rel="canonical" href="https://tfpartner.com.br/previsao-studio/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #141414;
+      --paper: #fbfaf8;
+      --white: #ffffff;
+      --muted: #5b5a57;
+      --line: #e8e6e2;
+      --dark: #191919;
+      --container: 1180px;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font-family: "Inter", sans-serif; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; }
+    .container { width: min(calc(100% - 3rem), var(--container)); margin: 0 auto; }
+    .skip-link { position: absolute; top: -60px; left: 1rem; z-index: 100; padding: .7rem 1rem; background: var(--white); }
+    .skip-link:focus { top: .5rem; }
+    :focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+    .site-header { background: rgba(251,250,248,.96); border-bottom: 1px solid var(--line); }
+    .header-inner { min-height: 82px; display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+    .brand { text-decoration: none; font-family: "Montserrat", sans-serif; font-size: 1.22rem; letter-spacing: .22em; font-weight: 300; white-space: nowrap; }
+    .brand strong { font-weight: 600; }
+    .navigation { display: flex; flex-wrap: wrap; align-items: center; gap: clamp(.8rem, 2.4vw, 2rem); }
+    .navigation a { font-size: .81rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; text-decoration: none; }
+    .navigation a[aria-current="page"] { text-decoration: underline; text-underline-offset: 7px; }
+    .navigation .login-link { border: 1px solid var(--ink); padding: .55rem .9rem; }
+    .navigation a:hover { opacity: .65; }
+    .hero { padding: clamp(5rem, 9vw, 10rem) 0 clamp(5rem, 9vw, 8rem); }
+    .eyebrow { text-transform: uppercase; font-size: .77rem; font-weight: 700; letter-spacing: .22em; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { font-size: clamp(3.1rem, 7.7vw, 7.25rem); font-weight: 600; letter-spacing: -.075em; line-height: 1.05; max-width: 1000px; margin: 2rem 0 2.3rem; }
+    h1 em { font-style: normal; color: var(--muted); }
+    .hero-lead { font-size: clamp(1.08rem, 1.75vw, 1.35rem); max-width: 620px; color: var(--muted); }
+    .hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 1rem 2rem; margin-top: 2.4rem; }
+    .button { display: inline-flex; align-items: center; justify-content: center; min-height: 51px; padding: .8rem 1.3rem; border: 1px solid var(--ink); text-decoration: none; font-size: .87rem; font-weight: 700; transition: background .2s, color .2s; }
+    .button-primary { background: var(--ink); color: var(--white); }
+    .button-primary:hover { background: #444; }
+    .button-secondary:hover { background: #eee; }
+    .section { padding: clamp(4.5rem, 8vw, 7rem) 0; scroll-margin-top: 2rem; }
+    .section-white { background: var(--white); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .section-head { display: grid; grid-template-columns: 1fr 1.2fr; gap: 3rem; align-items: end; margin-bottom: 3.2rem; }
+    .section-head h2, .closing h2 { font-size: clamp(2.3rem, 4.1vw, 4.2rem); line-height: 1.14; font-weight: 600; letter-spacing: -.055em; margin: 1rem 0 0; }
+    .section-head > p { max-width: 480px; margin: 0; color: var(--muted); font-size: 1.05rem; }
+    .service-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+    .service { min-height: 290px; padding: clamp(1.4rem, 3vw, 2.4rem); border: 1px solid var(--line); display: flex; flex-direction: column; }
+    .service-number { font-size: .77rem; letter-spacing: .14em; font-weight: 700; color: var(--muted); }
+    .service h3 { margin: auto 0 1rem; font-size: clamp(1.45rem, 2.4vw, 2rem); font-weight: 600; letter-spacing: -.04em; line-height: 1.2; }
+    .service p { color: var(--muted); margin-bottom: 0; font-size: .98rem; }
+    .approach { display: grid; grid-template-columns: .95fr 1.05fr; gap: clamp(2.5rem, 8vw, 7rem); align-items: start; }
+    .approach h2 { font-size: clamp(2.2rem, 4vw, 4rem); line-height: 1.14; letter-spacing: -.055em; margin: 1.5rem 0; }
+    .approach > div > p { color: var(--muted); max-width: 450px; }
+    .steps { padding: 0; margin: 0; list-style: none; border-top: 1px solid var(--line); }
+    .steps li { display: grid; grid-template-columns: 45px 1fr; gap: 1rem; padding: 1.45rem 0; border-bottom: 1px solid var(--line); }
+    .steps span { font-size: .8rem; font-weight: 700; color: var(--muted); }
+    .steps h3 { margin: 0 0 .3rem; font-size: 1.12rem; }
+    .steps p { margin: 0; color: var(--muted); font-size: .93rem; }
+    .closing { background: var(--dark); color: var(--white); padding: clamp(5rem, 9vw, 8.5rem) 0; }
+    .closing h2 { max-width: 760px; margin: 1.4rem 0 1.5rem; }
+    .closing p { max-width: 610px; color: #d1d1d1; font-size: 1.05rem; }
+    .closing .button { background: var(--white); border-color: var(--white); color: var(--ink); margin-top: 1.5rem; }
+    .closing .button:hover { background: #dddddd; }
+    .site-footer { padding: 2.5rem 0; border-top: 1px solid #373737; background: var(--dark); color: #bbb; font-size: .85rem; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 1rem 2rem; flex-wrap: wrap; }
+    .footer-inner a { text-underline-offset: 4px; }
+    @media (max-width: 780px) {
+      .header-inner { padding: 1.1rem 0; flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .navigation { gap: .85rem 1.3rem; }
+      .navigation a { font-size: .76rem; }
+      .section-head, .approach { grid-template-columns: 1fr; gap: 1.8rem; }
+      .service-grid { grid-template-columns: 1fr; }
+      .service { min-height: 220px; }
+      .service h3 { margin-top: 2rem; }
+    }
+    @media (max-width: 480px) {
+      .container { width: min(calc(100% - 2rem), var(--container)); }
+      .hero { padding-top: 4.5rem; }
+      h1 { font-size: clamp(2.75rem, 12vw, 4rem); }
+      .hero-actions .button { width: 100%; }
+      .navigation .login-link { padding: .4rem .6rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="../" aria-label="TFPARTNER, página inicial">TF<strong>PARTNER</strong></a>
+      <nav class="navigation" aria-label="Navegação principal">
+        <a href="../">Início</a>
+        <a href="./" aria-current="page">Studio</a>
+        <a href="https://wa.me/554588381017" target="_blank" rel="noopener noreferrer">Contato</a>
+        <a class="login-link" href="https://app.tfpartner.com.br/login">Login</a>
+      </nav>
+    </div>
+  </header>
+  <main id="conteudo">
+    <section class="hero" aria-labelledby="titulo-studio">
+      <div class="container">
+        <p class="eyebrow">TFPARTNER STUDIO / Marketing sob demanda</p>
+        <h1 id="titulo-studio">Seu marketing, <em>quando você precisar.</em></h1>
+        <p class="hero-lead">Design, produção audiovisual e comunicação desenvolvidos conforme as necessidades e o momento do seu negócio.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#servicos">Conhecer soluções</a>
+          <a class="button button-secondary" href="https://wa.me/554588381017" target="_blank" rel="noopener noreferrer">Conversar sobre um projeto</a>
+        </div>
+      </div>
+    </section>
+    <section class="section section-white" id="servicos" aria-labelledby="titulo-servicos">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">O que fazemos</p>
+            <h2 id="titulo-servicos">Soluções criativas, conforme a demanda.</h2>
+          </div>
+          <p>Nem toda empresa precisa da mesma estrutura o tempo todo. O Studio atua em projetos e necessidades pontuais, com foco em comunicação clara e execução profissional.</p>
+        </div>
+        <div class="service-grid">
+          <article class="service">
+            <span class="service-number">01 / AUDIOVISUAL</span>
+            <h3>Produção audiovisual</h3>
+            <p>Captação, edição e produção de vídeos para marcas, produtos, apresentações e canais digitais.</p>
+          </article>
+          <article class="service">
+            <span class="service-number">02 / DESIGN</span>
+            <h3>Design e comunicação</h3>
+            <p>Peças para mídias digitais, materiais comerciais e composições visuais alinhadas à identidade do negócio.</p>
+          </article>
+          <article class="service">
+            <span class="service-number">03 / MARKETING</span>
+            <h3>Marketing sob demanda</h3>
+            <p>Apoio criativo e estratégico para campanhas, conteúdos e iniciativas de comunicação, de acordo com cada necessidade.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section class="section" aria-labelledby="titulo-processo">
+      <div class="container approach">
+        <div>
+          <p class="eyebrow">Como trabalhamos</p>
+          <h2 id="titulo-processo">Cada projeto começa pela necessidade real.</h2>
+          <p>Uma atuação conectada ao contexto da empresa, sem exigir um formato único para diferentes desafios.</p>
+        </div>
+        <ol class="steps">
+          <li>
+            <span>01</span>
+            <div><h3>Entender</h3><p>Conhecer o objetivo, o público e o contexto da demanda.</p></div>
+          </li>
+          <li>
+            <span>02</span>
+            <div><h3>Estruturar e criar</h3><p>Definir a entrega adequada e desenvolver o material.</p></div>
+          </li>
+          <li>
+            <span>03</span>
+            <div><h3>Entregar e acompanhar</h3><p>Revisar o resultado e alinhar os próximos passos quando necessário.</p></div>
+          </li>
+        </ol>
+      </div>
+    </section>
+    <section class="closing" id="contato" aria-labelledby="titulo-contato">
+      <div class="container">
+        <p class="eyebrow">Vamos conversar?</p>
+        <h2 id="titulo-contato">O que sua marca precisa comunicar agora?</h2>
+        <p>Conte o que você pretende realizar. A partir disso, podemos avaliar uma solução adequada ao seu momento.</p>
+        <a class="button" href="https://wa.me/554588381017" target="_blank" rel="noopener noreferrer">Entrar em contato</a>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>&copy; 2026 TFPARTNER. STUDIO é uma frente de serviços da TFPARTNER.</span>
+      <a href="../">Voltar ao site institucional</a>
+    </div>
+  </footer>
+</body>
+</html>
