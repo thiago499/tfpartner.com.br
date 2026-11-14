@@ -1,0 +1,42 @@
+{
+  "titulo": "Somos América — Rafain",
+  "atualizado": "2026-11-14",
+  "esquetes": [
+    {
+      "id": "01",
+      "titulo": "Região Sul",
+      "url": "",
+      "status": "Aguardando vídeo"
+    },
+    {
+      "id": "03",
+      "titulo": "Paraguai",
+      "url": "",
+      "status": "Aguardando vídeo"
+    },
+    {
+      "id": "04",
+      "titulo": "Região Andina",
+      "url": "",
+      "status": "Aguardando vídeo"
+    },
+    {
+      "id": "05",
+      "titulo": "Colômbia",
+      "url": "",
+      "status": "Aguardando vídeo"
+    },
+    {
+      "id": "cuba",
+      "titulo": "Cuba",
+      "url": "",
+      "status": "Aguardando vídeo"
+    },
+    {
+      "id": "mexico",
+      "titulo": "México",
+      "url": "",
+      "status": "Aguardando vídeo"
+    }
+  ]
+}
