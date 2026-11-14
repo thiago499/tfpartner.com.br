@@ -9,7 +9,7 @@
 small,.muted{color:#a1afc4}h1{font-size:22px;margin:0}h2{font-size:17px;margin:0 0 12px}
 main{max-width:1190px;margin:30px auto;padding:0 20px;display:grid;grid-template-columns:minmax(0,2fr) minmax(280px,1fr);gap:24px}
 .player,.playlist{background:#111a2c;border:1px solid #29354b;border-radius:15px;overflow:hidden}
-video{display:block;width:100%;aspect-ratio:16/9;background:#030712}
+video{display:block;width:100%;aspect-ratio:16/9;background:#030712}.player{align-self:start;position:sticky;top:18px}
 .info{padding:19px}.info p{margin:8px 0 15px;color:#acb9ce}
 .controls{display:flex;flex-wrap:wrap;gap:8px}button{border:1px solid #445472;background:#1d2a41;color:#f8fafc;padding:11px 14px;border-radius:9px;cursor:pointer;font:inherit}
 button:hover,button:focus-visible{background:#304361;outline:2px solid transparent}button.primary{background:#e0b975;color:#16100a;border-color:#e0b975;font-weight:700}
@@ -20,7 +20,7 @@ li button.active{border-color:#e0b975;background:#2c2b2a}
 .badge{font-size:11px;color:#c8d4e7;border:1px solid #50607a;border-radius:20px;padding:4px 8px}
 footer{max-width:1190px;padding:0 20px 30px;margin:auto;color:#94a3b8;font-size:12px}
 #notice{color:#f1ca8e}a{color:#f1ca8e}
-@media(max-width:780px){main{grid-template-columns:1fr;margin:18px auto}header{padding:20px}}
+@media(max-width:780px){main{grid-template-columns:1fr;margin:18px auto}header{padding:20px}.player{position:static}}
 </style></head>
 <body>
 <header><div><small>TF PARTNER • PRODUÇÃO AUDIOVISUAL</small><h1>Somos América <span class="muted">| Rafain</span></h1></div><button id="share">Compartilhar</button></header>
@@ -30,7 +30,7 @@ footer{max-width:1190px;padding:0 20px 30px;margin:auto;color:#94a3b8;font-size:
 <div class="info"><small id="chapter">SELECIONE UMA ESQUETE</small><h2 id="title">Player de produção</h2><p id="notice" role="status">Carregando playlist…</p>
 <div class="controls"><button id="prev">← Anterior</button><button id="next" class="primary">Próxima esquete →</button><button id="reload">Atualizar lista</button></div></div>
 </section>
-<aside class="playlist"><h2>Esquetes / Capítulos</h2><ol id="chapters"></ol><p class="muted" style="font-size:12px">Ao terminar um vídeo, o próximo disponível começa automaticamente. Arquivos em elaboração são ignorados.</p></aside>
+<aside class="playlist"><h2>Ir para o capítulo</h2><ol id="chapters"></ol><p class="muted" style="font-size:12px">Uma única tela de reprodução: selecione um capítulo para assistir aqui no mesmo player. Ao terminar, a reprodução continua automaticamente na próxima esquete disponível.</p></aside>
 </main>
 <footer>Uso de produção • Acesso por link. Não publique materiais confidenciais sem configurar proteção de acesso.</footer>
 <script>
@@ -56,6 +56,7 @@ $('next').disabled=nextIndex(current,1)<0;
 }
 function select(i,autoplay=false){
 if(i<0||i>=chapters.length)return;
+if(i===current && playable(chapters[i]) && video.getAttribute('src')){if(autoplay){video.currentTime=0;video.play().catch(()=>{});}return;}
 current=i;const c=chapters[i];$('chapter').textContent='ESQUETE '+(c.id||i+1);$('title').textContent=c.titulo;
 if(!playable(c)){video.pause();video.removeAttribute('src');video.load();$('notice').textContent='Vídeo ainda não publicado para esta esquete.';}
 else{
