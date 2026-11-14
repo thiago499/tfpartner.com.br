@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101827"><title>Somos América | Rafain</title>
+<style>
+:root{font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:#f1f5f9;background:#0b1020;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0}header{padding:22px max(20px,calc((100vw - 1150px)/2));border-bottom:1px solid #263248;display:flex;justify-content:space-between;align-items:center;gap:15px}
+small,.muted{color:#a1afc4}h1{font-size:22px;margin:0}h2{font-size:17px;margin:0 0 12px}
+main{max-width:1190px;margin:30px auto;padding:0 20px;display:grid;grid-template-columns:minmax(0,2fr) minmax(280px,1fr);gap:24px}
+.player,.playlist{background:#111a2c;border:1px solid #29354b;border-radius:15px;overflow:hidden}
+video{display:block;width:100%;aspect-ratio:16/9;background:#030712}
+.info{padding:19px}.info p{margin:8px 0 15px;color:#acb9ce}
+.controls{display:flex;flex-wrap:wrap;gap:8px}button{border:1px solid #445472;background:#1d2a41;color:#f8fafc;padding:11px 14px;border-radius:9px;cursor:pointer;font:inherit}
+button:hover,button:focus-visible{background:#304361;outline:2px solid transparent}button.primary{background:#e0b975;color:#16100a;border-color:#e0b975;font-weight:700}
+.playlist{padding:16px;align-self:start}ol{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+li button{width:100%;text-align:left;display:flex;align-items:center;gap:12px;justify-content:space-between;padding:14px}
+li button.active{border-color:#e0b975;background:#2c2b2a}
+.name{font-weight:650}.status{font-size:12px;color:#a9b8d0;display:block;margin-top:3px}
+.badge{font-size:11px;color:#c8d4e7;border:1px solid #50607a;border-radius:20px;padding:4px 8px}
+footer{max-width:1190px;padding:0 20px 30px;margin:auto;color:#94a3b8;font-size:12px}
+#notice{color:#f1ca8e}a{color:#f1ca8e}
+@media(max-width:780px){main{grid-template-columns:1fr;margin:18px auto}header{padding:20px}}
+</style></head>
+<body>
+<header><div><small>TF PARTNER • PRODUÇÃO AUDIOVISUAL</small><h1>Somos América <span class="muted">| Rafain</span></h1></div><button id="share">Compartilhar</button></header>
+<main>
+<section class="player">
+<video id="video" controls playsinline preload="metadata" aria-label="Reprodutor das esquetes"></video>
+<div class="info"><small id="chapter">SELECIONE UMA ESQUETE</small><h2 id="title">Player de produção</h2><p id="notice" role="status">Carregando playlist…</p>
+<div class="controls"><button id="prev">← Anterior</button><button id="next" class="primary">Próxima esquete →</button><button id="reload">Atualizar lista</button></div></div>
+</section>
+<aside class="playlist"><h2>Esquetes / Capítulos</h2><ol id="chapters"></ol><p class="muted" style="font-size:12px">Ao terminar um vídeo, o próximo disponível começa automaticamente. Arquivos em elaboração são ignorados.</p></aside>
+</main>
+<footer>Uso de produção • Acesso por link. Não publique materiais confidenciais sem configurar proteção de acesso.</footer>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+let chapters=[],current=-1;
+const video=$('video');
+const params=new URLSearchParams(location.search);
+function playable(c){return /^https:\/\//i.test(c.url||'') || /^\.\.?\//.test(c.url||'') || /^\//.test(c.url||'')}
+function nextIndex(start,step){for(let i=start+step;i>=0&&i<chapters.length;i+=step)if(playable(chapters[i]))return i;return -1}
+function render(){
+const list=$('chapters');list.replaceChildren();
+chapters.forEach((c,i)=>{
+const li=document.createElement('li'),b=document.createElement('button'),left=document.createElement('span'),nm=document.createElement('span'),st=document.createElement('span'),flag=document.createElement('span');
+b.type='button';b.className=current===i?'active':'';b.setAttribute('aria-current',current===i?'true':'false');
+nm.className='name';nm.textContent=(c.id?c.id+' · ':'')+c.titulo;
+st.className='status';st.textContent=c.status||(playable(c)?'Disponível':'Aguardando vídeo');
+flag.className='badge';flag.textContent=playable(c)?'▶':'Pendente';left.append(nm,st);b.append(left,flag);
+b.onclick=()=>select(i,true);li.append(b);list.append(li);
+});
+$('prev').disabled=nextIndex(current,-1)<0;
+$('next').disabled=nextIndex(current,1)<0;
+}
+function select(i,autoplay=false){
+if(i<0||i>=chapters.length)return;
+current=i;const c=chapters[i];$('chapter').textContent='ESQUETE '+(c.id||i+1);$('title').textContent=c.titulo;
+if(!playable(c)){video.pause();video.removeAttribute('src');video.load();$('notice').textContent='Vídeo ainda não publicado para esta esquete.';}
+else{
+video.pause();video.src=c.url;video.load();$('notice').textContent=c.status||'Vídeo disponível.';
+if(autoplay)video.play().catch(()=>{$('notice').textContent='Clique em reproduzir para iniciar este vídeo.'});
+}
+const u=new URL(location.href);u.searchParams.set('esquete',c.id||String(i+1));history.replaceState(null,'',u);
+render();
+}
+video.addEventListener('ended',()=>{const i=nextIndex(current,1);if(i>=0)select(i,true);else $('notice').textContent='Fim da sequência disponível.'});
+video.addEventListener('error',()=>{if(video.getAttribute('src'))$('notice').textContent='Não foi possível abrir este vídeo. Verifique o endereço e as permissões do arquivo.'});
+$('next').onclick=()=>select(nextIndex(current,1),true);
+$('prev').onclick=()=>select(nextIndex(current,-1),true);
+$('reload').onclick=()=>load(true);
+$('share').onclick=async()=>{try{if(navigator.share)await navigator.share({title:document.title,url:location.href});else if(navigator.clipboard){await navigator.clipboard.writeText(location.href);$('notice').textContent='Link copiado.';}else $('notice').textContent='Copie o endereço desta página para compartilhar.'}catch(e){}};
+async function load(refresh=false){
+try{const res=await fetch('./playlist.json?ts='+Date.now(),{cache:'no-store'});if(!res.ok)throw Error('HTTP '+res.status);
+const data=await res.json();if(!Array.isArray(data.esquetes))throw Error('Playlist inválida');
+const old=chapters[current]?.id;chapters=data.esquetes;
+const requested=params.get('esquete');
+let idx=chapters.findIndex(c=>c.id===(refresh?old:requested));
+if(idx<0)idx=chapters.findIndex(playable);if(idx<0)idx=0;
+if(!chapters.length){$('notice').textContent='Nenhuma esquete cadastrada.';render();return}
+select(idx,false);
+if(refresh)$('notice').textContent='Lista atualizada. '+$('notice').textContent;
+}catch(e){$('notice').textContent='Não foi possível carregar a playlist: '+e.message}}
+load();
+</script></body></html>
