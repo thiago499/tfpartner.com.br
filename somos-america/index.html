@@ -2,14 +2,14 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#101827"><title>Somos América | Rafain</title>
+<meta name="theme-color" content="#101827"><title>Nimbus Player | Somos América — Rafain</title>
 <style>
 :root{font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:#f1f5f9;background:#0b1020;color-scheme:dark}
 *{box-sizing:border-box}body{margin:0}header{padding:22px max(20px,calc((100vw - 1150px)/2));border-bottom:1px solid #263248;display:flex;justify-content:space-between;align-items:center;gap:15px}
 small,.muted{color:#a1afc4}h1{font-size:22px;margin:0}h2{font-size:17px;margin:0 0 12px}
 main{max-width:1190px;margin:30px auto;padding:0 20px;display:grid;grid-template-columns:minmax(0,2fr) minmax(280px,1fr);gap:24px}
 .player,.playlist{background:#111a2c;border:1px solid #29354b;border-radius:15px;overflow:hidden}
-video{display:block;width:100%;aspect-ratio:16/9;background:#030712}.player{align-self:start;position:sticky;top:18px}
+video,iframe{display:block;width:100%;aspect-ratio:16/9;background:#030712;border:0}[hidden]{display:none!important}.player{align-self:start;position:sticky;top:18px}
 .info{padding:19px}.info p{margin:8px 0 15px;color:#acb9ce}
 .controls{display:flex;flex-wrap:wrap;gap:8px}button{border:1px solid #445472;background:#1d2a41;color:#f8fafc;padding:11px 14px;border-radius:9px;cursor:pointer;font:inherit}
 button:hover,button:focus-visible{background:#304361;outline:2px solid transparent}button.primary{background:#e0b975;color:#16100a;border-color:#e0b975;font-weight:700}
@@ -23,23 +23,27 @@ footer{max-width:1190px;padding:0 20px 30px;margin:auto;color:#94a3b8;font-size:
 @media(max-width:780px){main{grid-template-columns:1fr;margin:18px auto}header{padding:20px}.player{position:static}}
 </style></head>
 <body>
-<header><div><small>TF PARTNER • PRODUÇÃO AUDIOVISUAL</small><h1>Somos América <span class="muted">| Rafain</span></h1></div><button id="share">Compartilhar</button></header>
+<header><div><small>TF PARTNER • NIMBUS PLAYER</small><h1>Somos América <span class="muted">| Rafain</span></h1></div><button id="share">Compartilhar</button></header>
 <main>
 <section class="player">
 <video id="video" controls playsinline preload="metadata" aria-label="Reprodutor das esquetes"></video>
+<iframe id="drive" title="Reprodutor do Google Drive" allow="fullscreen" allowfullscreen hidden></iframe>
 <div class="info"><small id="chapter">SELECIONE UMA ESQUETE</small><h2 id="title">Player de produção</h2><p id="notice" role="status">Carregando playlist…</p>
+<p><a id="drive-link" target="_blank" rel="noopener" hidden>Abrir vídeo no Google Drive</a></p>
 <div class="controls"><button id="prev">← Anterior</button><button id="next" class="primary">Próxima esquete →</button><button id="reload">Atualizar lista</button></div></div>
 </section>
-<aside class="playlist"><h2>Ir para o capítulo</h2><ol id="chapters"></ol><p class="muted" style="font-size:12px">Uma única tela de reprodução: selecione um capítulo para assistir aqui no mesmo player. Ao terminar, a reprodução continua automaticamente na próxima esquete disponível.</p></aside>
+<aside class="playlist"><h2>Ir para o capítulo</h2><ol id="chapters"></ol><p class="muted" style="font-size:12px">Uma única tela de reprodução: selecione um capítulo para assistir aqui no mesmo player. Os vídeos hospedados diretamente avançam ao terminar. Para vídeos do Drive, use Próxima esquete.</p></aside>
 </main>
 <footer>Uso de produção • Acesso por link. Não publique materiais confidenciais sem configurar proteção de acesso.</footer>
 <script>
 'use strict';
 const $=id=>document.getElementById(id);
-let chapters=[],current=-1;
+let chapters=[],current=-1,activeSource='';
 const video=$('video');
-const params=new URLSearchParams(location.search);
-function playable(c){return /^https:\/\//i.test(c.url||'') || /^\.\.?\//.test(c.url||'') || /^\//.test(c.url||'')}
+const drive=$('drive');
+const driveLink=$('drive-link');
+function hasDrive(c){return /^[\w-]{10,}$/.test(c?.driveId||'');}
+function playable(c){return hasDrive(c) || /^https:\/\//i.test(c.url||'') || /^\.\.?\//.test(c.url||'') || /^\//.test(c.url||'')}
 function nextIndex(start,step){for(let i=start+step;i>=0&&i<chapters.length;i+=step)if(playable(chapters[i]))return i;return -1}
 function render(){
 const list=$('chapters');list.replaceChildren();
@@ -56,12 +60,30 @@ $('next').disabled=nextIndex(current,1)<0;
 }
 function select(i,autoplay=false){
 if(i<0||i>=chapters.length)return;
-if(i===current && playable(chapters[i]) && video.getAttribute('src')){if(autoplay){video.currentTime=0;video.play().catch(()=>{});}return;}
+
 current=i;const c=chapters[i];$('chapter').textContent='ESQUETE '+(c.id||i+1);$('title').textContent=c.titulo;
-if(!playable(c)){video.pause();video.removeAttribute('src');video.load();$('notice').textContent='Vídeo ainda não publicado para esta esquete.';}
-else{
-video.pause();video.src=c.url;video.load();$('notice').textContent=c.status||'Vídeo disponível.';
-if(autoplay)video.play().catch(()=>{$('notice').textContent='Clique em reproduzir para iniciar este vídeo.'});
+const useDrive=hasDrive(c);
+const source=useDrive?'https://drive.google.com/file/d/'+c.driveId+'/preview':playable(c)?c.url:'';
+if(source!==activeSource){
+  if(video.hasAttribute('src')){video.pause();video.removeAttribute('src');video.load();}
+  if(drive.hasAttribute('src'))drive.removeAttribute('src');
+  video.hidden=useDrive;
+  drive.hidden=!useDrive;
+  driveLink.hidden=!useDrive;
+  if(useDrive){
+    drive.src=source;
+    driveLink.href='https://drive.google.com/file/d/'+c.driveId+'/view';
+  }else if(source){
+    video.src=source;
+    video.load();
+  }
+  activeSource=source;
+}
+$('notice').textContent=source?(useDrive?'Clique em reproduzir no vídeo.':c.status||'Vídeo disponível.'):'Vídeo ainda não publicado para esta esquete.';
+if(autoplay && source && !useDrive){
+  video.play().catch(()=>{
+    if(activeSource===source)$('notice').textContent='Clique em reproduzir para iniciar este vídeo.';
+  });
 }
 const u=new URL(location.href);u.searchParams.set('esquete',c.id||String(i+1));history.replaceState(null,'',u);
 render();
@@ -71,12 +93,12 @@ video.addEventListener('error',()=>{if(video.getAttribute('src'))$('notice').tex
 $('next').onclick=()=>select(nextIndex(current,1),true);
 $('prev').onclick=()=>select(nextIndex(current,-1),true);
 $('reload').onclick=()=>load(true);
-$('share').onclick=async()=>{try{if(navigator.share)await navigator.share({title:document.title,url:location.href});else if(navigator.clipboard){await navigator.clipboard.writeText(location.href);$('notice').textContent='Link copiado.';}else $('notice').textContent='Copie o endereço desta página para compartilhar.'}catch(e){}};
+$('share').onclick=async()=>{try{if(navigator.share)await navigator.share({title:document.title,url:location.href});else if(navigator.clipboard){await navigator.clipboard.writeText(location.href);$('notice').textContent='Link copiado.';}else $('notice').textContent='Copie o endereço desta página para compartilhar.'}catch(e){if(e.name!=='AbortError')$('notice').textContent='Copie o endereço desta página para compartilhar.';}};
 async function load(refresh=false){
 try{const res=await fetch('./playlist.json?ts='+Date.now(),{cache:'no-store'});if(!res.ok)throw Error('HTTP '+res.status);
 const data=await res.json();if(!Array.isArray(data.esquetes))throw Error('Playlist inválida');
 const old=chapters[current]?.id;chapters=data.esquetes;
-const requested=params.get('esquete');
+const requested=new URLSearchParams(location.search).get('esquete');
 let idx=chapters.findIndex(c=>c.id===(refresh?old:requested));
 if(idx<0)idx=chapters.findIndex(playable);if(idx<0)idx=0;
 if(!chapters.length){$('notice').textContent='Nenhuma esquete cadastrada.';render();return}

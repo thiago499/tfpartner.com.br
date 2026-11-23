@@ -1,6 +1,6 @@
 {
   "titulo": "Somos América — Rafain",
-  "atualizado": "2026-11-14",
+  "atualizado": "2026-11-22",
   "esquetes": [
     {
       "id": "01",
@@ -12,7 +12,8 @@
       "id": "03",
       "titulo": "Paraguai",
       "url": "",
-      "status": "Aguardando vídeo"
+      "status": "Disponível",
+      "driveId": "1TTDG1fbnT-spBUKefnM9lZO7N7khnOYr"
     },
     {
       "id": "04",
