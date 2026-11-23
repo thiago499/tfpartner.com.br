@@ -32,7 +32,7 @@ footer{max-width:1190px;padding:0 20px 30px;margin:auto;color:#94a3b8;font-size:
 <p><a id="drive-link" target="_blank" rel="noopener" hidden>Abrir vídeo no Google Drive</a></p>
 <div class="controls"><button id="prev">← Anterior</button><button id="next" class="primary">Próxima esquete →</button><button id="reload">Atualizar lista</button></div></div>
 </section>
-<aside class="playlist"><h2>Ir para o capítulo</h2><ol id="chapters"></ol><p class="muted" style="font-size:12px">Uma única tela de reprodução: selecione um capítulo para assistir aqui no mesmo player. Os vídeos hospedados diretamente avançam ao terminar. Para vídeos do Drive, use Próxima esquete.</p></aside>
+<aside class="playlist"><h2>Ir para o capítulo</h2><ol id="chapters"></ol><p class="muted" style="font-size:12px">Uma única tela de reprodução: selecione um capítulo para assistir aqui no mesmo player. Ao terminar, a reprodução continua automaticamente na próxima esquete disponível.</p></aside>
 </main>
 <footer>Uso de produção • Acesso por link. Não publique materiais confidenciais sem configurar proteção de acesso.</footer>
 <script>
@@ -62,17 +62,17 @@ function select(i,autoplay=false){
 if(i<0||i>=chapters.length)return;
 
 current=i;const c=chapters[i];$('chapter').textContent='ESQUETE '+(c.id||i+1);$('title').textContent=c.titulo;
-const useDrive=hasDrive(c);
+const useDrive=hasDrive(c) && !c.url;
 const source=useDrive?'https://drive.google.com/file/d/'+c.driveId+'/preview':playable(c)?c.url:'';
 if(source!==activeSource){
   if(video.hasAttribute('src')){video.pause();video.removeAttribute('src');video.load();}
   if(drive.hasAttribute('src'))drive.removeAttribute('src');
   video.hidden=useDrive;
   drive.hidden=!useDrive;
-  driveLink.hidden=!useDrive;
+  driveLink.hidden=!hasDrive(c);
+  if(hasDrive(c))driveLink.href='https://drive.google.com/file/d/'+c.driveId+'/view';
   if(useDrive){
     drive.src=source;
-    driveLink.href='https://drive.google.com/file/d/'+c.driveId+'/view';
   }else if(source){
     video.src=source;
     video.load();
@@ -80,16 +80,29 @@ if(source!==activeSource){
   activeSource=source;
 }
 $('notice').textContent=source?(useDrive?'Clique em reproduzir no vídeo.':c.status||'Vídeo disponível.'):'Vídeo ainda não publicado para esta esquete.';
-if(autoplay && source && !useDrive){
+if(autoplay && video.hasAttribute('src')){
   video.play().catch(()=>{
-    if(activeSource===source)$('notice').textContent='Clique em reproduzir para iniciar este vídeo.';
+    if(activeSource===source && video.hasAttribute('src'))$('notice').textContent='Clique em reproduzir para iniciar este vídeo.';
   });
 }
 const u=new URL(location.href);u.searchParams.set('esquete',c.id||String(i+1));history.replaceState(null,'',u);
 render();
 }
 video.addEventListener('ended',()=>{const i=nextIndex(current,1);if(i>=0)select(i,true);else $('notice').textContent='Fim da sequência disponível.'});
-video.addEventListener('error',()=>{if(video.getAttribute('src'))$('notice').textContent='Não foi possível abrir este vídeo. Verifique o endereço e as permissões do arquivo.'});
+video.addEventListener('error',()=>{
+  if(!video.hasAttribute('src'))return;
+  const c=chapters[current];
+  if(hasDrive(c)){
+    video.removeAttribute('src');
+    video.load();
+    video.hidden=true;
+    drive.hidden=false;
+    drive.src='https://drive.google.com/file/d/'+c.driveId+'/preview';
+    $('notice').textContent='Reproduza no Google Drive. Para avançar, use Próxima esquete.';
+  }else{
+    $('notice').textContent='Não foi possível abrir este vídeo. Verifique o endereço e as permissões do arquivo.';
+  }
+});
 $('next').onclick=()=>select(nextIndex(current,1),true);
 $('prev').onclick=()=>select(nextIndex(current,-1),true);
 $('reload').onclick=()=>load(true);
